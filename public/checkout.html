@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Donlight - Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+
+<body>
+<div class="app-bg">
+
+<header class="nav-bar">
+  <div class="container nav-inner">
+    <span class="brand">Donlight</span>
+    <a href="cart.html" class="nav-icon">← Back</a>
+  </div>
+</header>
+
+<main class="container checkout-page">
+
+  <h1 class="menu-title">Checkout</h1>
+  <p class="menu-subtitle">Confirm your order details</p>
+
+  <div class="checkout-wrapper">
+
+    <!-- LEFT -->
+    <div class="checkout-form">
+      <h3>Delivery Address</h3>
+      <input type="text" placeholder="Full Name">
+      <input type="text" placeholder="Phone Number">
+      <textarea placeholder="Full Address"></textarea>
+
+      <button class="checkout-btn">Place Order</button>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="checkout-summary">
+      <h3>Order Summary</h3>
+      <div id="summary-list"></div>
+      <div class="summary-total" id="summary-total">Total: Rp 0</div>
+    </div>
+
+  </div>
+
+</main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const summaryList = document.getElementById("summary-list");
+  const summaryTotal = document.getElementById("summary-total");
+  const orderBtn = document.querySelector(".checkout-btn");
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function renderSummary() {
+    summaryList.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+      summaryList.innerHTML = "<p>Cart is empty</p>";
+      summaryTotal.innerText = "Total: Rp 0";
+      return;
+    }
+
+    cart.forEach(item => {
+      if (!item.qty) item.qty = 1;
+
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+
+      summaryList.innerHTML += `
+        <div class="summary-item">
+          <span>${item.name} × ${item.qty}</span>
+          <span>Rp ${itemTotal.toLocaleString()}</span>
+        </div>
+      `;
+    });
+
+    summaryTotal.innerText = "Total: Rp " + total.toLocaleString();
+  }
+
+  orderBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    orders.push({
+      date: new Date().toLocaleString(),
+      items: cart,
+      total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+    });
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.removeItem("cart");
+
+    location.href = "order-history.html";
+  });
+
+  renderSummary();
+});
+</script>
+
+</body>
+</html>

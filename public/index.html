@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donlight</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons (buat icon navbar & kategori) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- CSS kamu -->
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/menu.css" />
+</head>
+<body>
+  <div class="app-bg"><!-- gradient background -->
+
+    <!-- NAVBAR -->
+    <header class="nav-bar">
+      <div class="container nav-inner">
+        <div class="nav-left">
+          <div class="logo-circle">
+            <span class="logo-text">DL</span>
+          </div>
+          <span class="brand-name">Donlight</span>
+        </div>
+
+        <nav class="nav-right">
+          <a href="#" class="nav-link active">
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+          </a>
+          <a href="menu.html" class="nav-link">
+            <i class="bi bi-list"></i>
+            <span>Menu</span>
+          </a>
+          <a href="#" class="nav-link">
+            <i class="bi bi-cart"></i>
+            <span>Cart</span>
+          </a>
+          <a href="#" class="nav-link">
+            <i class="bi bi-geo-alt"></i>
+            <span>Track</span>
+          </a>
+          <a href="#" class="nav-link">
+            <i class="bi bi-person-fill"></i>
+            <span>Profile</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- HERO CARD -->
+      <section class="container hero-section">
+        <div class="hero-card">
+          <div class="hero-main">
+            <div class="hero-text">
+              <div class="hero-badge">New Flavors Available!</div>
+
+              <h1 class="hero-title">Sweet Moments,<br>Delivered Fresh</h1>
+
+              <p class="hero-desc">
+                Order your favorite donuts and drinks, delivered hot to your
+                doorstep in 30 minutes or less!
+              </p>
+
+              <div class="hero-actions">
+                <button class="btn-primary">ORDER NOW</button>
+                <button class="btn-ghost">
+                  <span class="btn-ghost-text">View Menu</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-image-wrapper">
+              <!-- ganti src ini dengan gambar kamu sendiri -->
+              <img
+                src="https://images.pexels.com/photos/3760851/pexels-photo-3760851.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Customer"
+                class="hero-image"
+              />
+            </div>
+          </div>
+
+          <div class="hero-promo">
+            <div class="promo-left">
+              <span class="promo-badge">⚡ Limited Time Offer</span>
+              <div class="promo-text-main">Get 30% OFF on your first order!</div>
+              <div class="promo-text-sub">Use code: <strong>SWEET30</strong> at checkout</div>
+            </div>
+            <button class="promo-button">
+              CLAIM OVER
+              <span class="promo-arrow">›</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section class="container categories-section">
+        <h2 class="section-title">Shop by Category</h2>
+
+        <div class="category-grid">
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="bi bi-circle-half"></i>
+            </div>
+            <div class="category-label">Donuts</div>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="bi bi-cup-straw"></i>
+            </div>
+            <div class="category-label">Drinks</div>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="bi bi-gift"></i>
+            </div>
+            <div class="category-label">Bundles</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- POPULAR (judul saja dulu) -->
+      <section class="container popular-section">
+        <h2 class="section-title">Popular</h2>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

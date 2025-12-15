@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Donlight - Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+
+<body>
+<div class="app-bg">
+
+<header class="nav-bar">
+  <div class="container nav-inner">
+    <span class="brand">Donlight</span>
+    <a href="menu.html" class="nav-icon">← Back</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <h1 class="menu-title">Your Cart</h1>
+
+  <!-- INI WAJIB ADA -->
+  <div id="cart-list" class="cart-list"></div>
+
+  <!-- INI WAJIB ADA -->
+  <div class="cart-footer">
+    <span id="cart-total">Total: Rp 0</span>
+    <button class="checkout-btn" onclick="location.href='checkout.html'">
+      Checkout
+    </button>
+  </div>
+
+</main>
+</div>
+
+<script>
+const cartList = document.getElementById("cart-list");
+const cartTotal = document.getElementById("cart-total");
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function renderCart() {
+  cartList.innerHTML = "";
+  let total = 0;
+
+  if (cart.length === 0) {
+    cartList.innerHTML = "<p>Cart is empty</p>";
+    cartTotal.innerText = "Total: Rp 0";
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    if (!item.qty) item.qty = 1;
+    const itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    cartList.innerHTML += `
+      <div class="cart-item">
+        <div>
+          <strong>${item.name}</strong>
+          <div class="price">
+            Rp ${item.price.toLocaleString()} × ${item.qty}
+          </div>
+        </div>
+
+        <div class="qty-control">
+          <button onclick="changeQty(${index}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${index}, 1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+
+  cartTotal.innerText = "Total: Rp " + total.toLocaleString();
+}
+
+function changeQty(index, change) {
+  cart[index].qty += change;
+
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let totalQty = cart.reduce((sum, item) => {
+    return sum + (item.qty || 1);
+  }, 0);
+
+  badge.innerText = totalQty;
+  badge.style.display = totalQty > 0 ? "flex" : "none";
+}
+
+
+renderCart();
+updateCartBadge();
+
+</script>
+
+</body>
+</html>

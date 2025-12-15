@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History - Donlight</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/menu.css">
+</head>
+
+<body>
+<div class="app-bg">
+
+<header class="nav-bar">
+  <div class="container nav-inner">
+    <span class="brand">Donlight</span>
+    <a href="menu.html" class="nav-icon">← Back</a>
+  </div>
+</header>
+
+<main class="container">
+  <h1 class="menu-title">Order History</h1>
+  <div id="order-list"></div>
+</main>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const orderList = document.getElementById("order-list");
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  if (orders.length === 0) {
+    orderList.innerHTML = "<p>No orders yet.</p>";
+    return;
+  }
+
+  orders.reverse().forEach(order => {
+    let itemsHtml = "";
+
+    order.items.forEach(item => {
+      if (!item.qty) item.qty = 1;
+
+      itemsHtml += `
+        <div class="order-item">
+          <span>${item.name} × ${item.qty}</span>
+          <span>Rp ${(item.price * item.qty).toLocaleString()}</span>
+        </div>
+      `;
+    });
+
+    orderList.innerHTML += `
+      <div class="order-card">
+        <div class="order-date">${order.date}</div>
+
+        <div class="order-items">
+          ${itemsHtml}
+        </div>
+
+        <div class="order-total">
+          Total: Rp ${order.total.toLocaleString()}
+        </div>
+      </div>
+    `;
+  });
+
+});
+</script>
+
+</body>
+</html>
