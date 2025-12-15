@@ -1,16 +1,18 @@
-class Transaksi extends Model {
-    protected $primaryKey = 'id_transaksi';
-    protected $fillable = ['id_user','id_customer','tanggal','total_harga'];
+<?php
 
-    public function user() {
-        return $this->belongsTo(User::class, 'id_user');
-    }
+namespace App\Models;
 
-    public function customer() {
-        return $this->belongsTo(Customer::class, 'id_customer');
-    }
+use Illuminate\Database\Eloquent\Model;
 
-    public function detailTransaksis() {
-        return $this->hasMany(DetailTransaksi::class, 'id_transaksi');
-    }
+class Transaksi extends Model
+{
+    protected $table = 'transaksis'; // SESUAI MIGRATION
+    protected $primaryKey = 'id_transaksi'; // SESUAI DB
+    public $timestamps = true;
+
+    protected $fillable = [
+        'id_customer',
+        'tanggal',
+        'total',
+    ];
 }
