@@ -5,6 +5,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN & LOGOUT (MANUAL)
+| LOGIN
 |--------------------------------------------------------------------------
 */
 Route::get('/login', [LoginController::class, 'showLogin'])
@@ -29,24 +30,24 @@ Route::post('/login', [LoginController::class, 'login'])
 
 Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
-    ->name('logout');   // 🔥 INI YANG WAJIB ADA
+    ->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| OWNER & ADMIN
+| AUTHENTICATED
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:owner,admin'])->group(function () {
-    Route::resource('produk', ProdukController::class);
-    Route::resource('customer', CustomerController::class);
-});
+Route::middleware('auth')->group(function () {
 
-/*
-|--------------------------------------------------------------------------
-| KASIR
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'role:kasir'])->group(function () {
-    Route::resource('transaksi', TransaksiController::class);
-    Route::get('/kasir', fn () => view('kasir.index'));
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    Route::middleware('role:owner,admin')->group(function () {
+        Route::resource('produk', ProdukController::class);
+        Route::resource('customer', CustomerController::class);
+    });
+
+    Route::middleware('role:owner,admin,kasir')->group(function () {
+        Route::resource('transaksi', TransaksiController::class);
+    });
+
 });
