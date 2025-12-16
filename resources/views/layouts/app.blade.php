@@ -1,38 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Donlight Admin</title>
-
-    {{-- Bootstrap --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Donlight</title>
+    @vite('resources/css/app.css')
 </head>
-<body>
+<body class="bg-gray-100">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">Donlight</a>
+<div class="flex min-h-screen">
 
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                @auth
-                    <li class="nav-item">
-                        <span class="nav-link">{{ auth()->user()->nama }} ({{ auth()->user()->role }})</span>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-sm btn-danger">Logout</button>
-                        </form>
-                    </li>
-                @endauth
-            </ul>
+    {{-- SIDEBAR --}}
+    <aside class="w-64 bg-pink-500 text-white flex flex-col">
+        <div class="p-4 text-2xl font-bold border-b border-pink-400">
+            💡 Donlight
         </div>
-    </div>
-</nav>
 
-<div class="container mt-4">
-    @yield('content')
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-pink-600">
+                🏠 Dashboard
+            </a>
+
+            @if(in_array(auth()->user()->role, ['owner','admin']))
+                <a href="{{ route('produk.index') }}" class="block px-3 py-2 rounded hover:bg-pink-600">
+                    📦 Produk
+                </a>
+
+                <a href="{{ route('customer.index') }}" class="block px-3 py-2 rounded hover:bg-pink-600">
+                    👥 Customer
+                </a>
+            @endif
+
+            @if(in_array(auth()->user()->role, ['owner','admin','kasir']))
+                <a href="{{ route('transaksi.index') }}" class="block px-3 py-2 rounded hover:bg-pink-600">
+                    💳 Transaksi
+                </a>
+            @endif
+        </nav>
+
+        <div class="p-4 border-t border-pink-400">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button class="w-full bg-white text-pink-600 py-2 rounded">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    {{-- CONTENT --}}
+    <main class="flex-1 p-6">
+        @yield('content')
+    </main>
+
 </div>
 
 </body>

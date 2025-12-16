@@ -9,8 +9,8 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
-        return view('customer.index', compact('customers'));
+        $customer = Customer::all();
+        return view('customer.index', compact('customer'));
     }
 
     public function create()
@@ -21,50 +21,47 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
+            'nama'  => 'required',
             'email' => 'required|email',
-            'alamat' => 'required',
+            'telp'  => 'required',
         ]);
 
         Customer::create([
-            'nama' => $request->nama,
+            'nama'  => $request->nama,
             'email' => $request->email,
-            'alamat' => $request->alamat,
+            'telp'  => $request->telp,
         ]);
 
         return redirect()->route('customer.index')
             ->with('success', 'Customer berhasil ditambahkan');
     }
 
-    public function edit($id)
+    public function edit(Customer $customer)
     {
-        $customer = Customer::findOrFail($id);
         return view('customer.edit', compact('customer'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Customer $customer)
     {
-        $customer = Customer::findOrFail($id);
-
         $request->validate([
-            'nama' => 'required',
+            'nama'  => 'required',
             'email' => 'required|email',
-            'alamat' => 'required',
+            'telp'  => 'required',
         ]);
 
         $customer->update([
-            'nama' => $request->nama,
+            'nama'  => $request->nama,
             'email' => $request->email,
-            'alamat' => $request->alamat,
+            'telp'  => $request->telp,
         ]);
 
         return redirect()->route('customer.index')
             ->with('success', 'Customer berhasil diupdate');
     }
 
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        Customer::destroy($id);
+        $customer->delete();
 
         return redirect()->route('customer.index')
             ->with('success', 'Customer berhasil dihapus');

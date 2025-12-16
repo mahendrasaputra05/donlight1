@@ -9,8 +9,9 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        $produks = Produk::all();
-        return view('produk.index', compact('produks'));
+        // SAMAKAN DENGAN VIEW: $produk
+        $produk = Produk::all();
+        return view('produk.index', compact('produk'));
     }
 
     public function create()
@@ -21,14 +22,19 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_produk' => 'required',
+            'nama'  => 'required',
             'harga' => 'required|numeric',
-            'stock' => 'required|numeric',
+            'stok'  => 'required|numeric',
         ]);
 
-        Produk::create($request->all());
+        Produk::create([
+            'nama'  => $request->nama,
+            'harga' => $request->harga,
+            'stok'  => $request->stok,
+        ]);
 
-        return redirect('/produk')->with('success', 'Produk berhasil ditambahkan');
+        return redirect()->route('produk.index')
+            ->with('success', 'Produk berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -39,15 +45,28 @@ class ProdukController extends Controller
 
     public function update(Request $request, $id)
     {
-        $produk = Produk::findOrFail($id);
-        $produk->update($request->all());
+        $request->validate([
+            'nama'  => 'required',
+            'harga' => 'required|numeric',
+            'stok'  => 'required|numeric',
+        ]);
 
-        return redirect('/produk')->with('success', 'Produk berhasil diupdate');
+        $produk = Produk::findOrFail($id);
+        $produk->update([
+            'nama'  => $request->nama,
+            'harga' => $request->harga,
+            'stok'  => $request->stok,
+        ]);
+
+        return redirect()->route('produk.index')
+            ->with('success', 'Produk berhasil diupdate');
     }
 
     public function destroy($id)
     {
         Produk::destroy($id);
-        return redirect('/produk')->with('success', 'Produk berhasil dihapus');
+
+        return redirect()->route('produk.index')
+            ->with('success', 'Produk berhasil dihapus');
     }
 }

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<h1 class="text-xl font-bold mb-4">Data Produk</h1>
 <div class="container">
     <h3>Edit Customer</h3>
 

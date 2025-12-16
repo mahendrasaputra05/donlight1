@@ -1,34 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Data Produk</h3>
+<h1 class="text-2xl font-bold mb-6">📦 Data Produk</h1>
 
-<a href="{{ route('produk.create') }}" class="btn btn-primary mb-2">
-    Tambah Produk
+<a href="{{ route('produk.create') }}"
+   class="inline-block mb-4 bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+   + Tambah Produk
 </a>
 
-<table class="table table-bordered">
-    <tr>
-        <th>Nama</th>
-        <th>Harga</th>
-        <th>Stock</th>
-        <th>Aksi</th>
-    </tr>
+@if(session('success'))
+    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+        {{ session('success') }}
+    </div>
+@endif
 
-    @foreach ($produks as $p)
-    <tr>
-        <td>{{ $p->nama_produk }}</td>
-        <td>Rp {{ number_format($p->harga) }}</td>
-        <td>{{ $p->stock }}</td>
-        <td>
-            <a href="{{ route('produk.edit', $p->id_produk) }}" class="btn btn-warning btn-sm">Edit</a>
+<table class="w-full bg-white shadow rounded overflow-hidden">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="p-3 text-left">Nama</th>
+            <th class="p-3 text-left">Harga</th>
+            <th class="p-3 text-left">Stok</th>
+            <th class="p-3 text-left">Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($produk as $item)
+            <tr class="border-t">
+                <td class="p-3">{{ $item->nama }}</td>
+                <td class="p-3">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
+                <td class="p-3">{{ $item->stok }}</td>
+                <td class="p-3 space-x-2">
 
-            <form action="{{ route('produk.destroy', $p->id_produk) }}" method="POST" class="d-inline">
-                @csrf @method('DELETE')
-                <button class="btn btn-danger btn-sm">Hapus</button>
-            </form>
-        </td>
-    </tr>
-    @endforeach
+                    {{-- EDIT --}}
+                    <a href="{{ route('produk.edit', $item) }}"
+                       class="text-blue-600 hover:underline">
+                        Edit
+                    </a>
+
+                    {{-- HAPUS --}}
+                    <form action="{{ route('produk.destroy', $item) }}"
+                          method="POST"
+                          class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="text-red-600 hover:underline"
+                                onclick="return confirm('Yakin ingin menghapus produk ini?')">
+                            Hapus
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" class="p-4 text-center text-gray-500">
+                    Data produk belum ada
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
 </table>
 @endsection
